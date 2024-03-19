@@ -1,30 +1,46 @@
 //import liraries
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 
 // create a component
 const Contact = () => {
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+       // const baseUrl = "https://app.aforro.in/api/product/list/";
+       const baseUrl = "https://app.aforro.in/api/";
+        axios.get(baseUrl)
+            .then(response => {
+                setData(response.data)
+            })
+            .catch(error => {
+                console.error("Error Fetching Data:", error);
+            })
+    }, []);
+
     return (
         <View style={styles.container}>
-            <View style={styles.mainStyle}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center', backgroundColor: '#CD6155', flex: 1 }}>
-                    <Image
-                        style={{ width: '100%', height:'100%' }}
-                        source={require('../../data/Grocery.png')}
-                    />
-                </View>
-                <View style={{ flex: 1, backgroundColor: '#CCCCFF', alignSelf: 'center', fontSize: 20, fontWeight: '800',alignItems:'center',marginBottom:50 }}>
-                    <Text style={{fontWeight:'900',fontSize:25}}>Product Name</Text>
-                    <Text style={{fontWeight:'900',fontSize:22}}>Price</Text>
-                    <Text style={{fontSize:18}} >550</Text>
-                    <View style={{height:1,width:40,backgroundColor:'red',margin:1}}></View>
-                 <View style={{flexDirection:'row',justifyContent:'center',alignContent:'center'}}>
-                    <Text>Offer</Text>
-                    <Text>30%</Text>
-                 </View>
-                </View>
-            </View>
-            <Text>Contact</Text>
+            <ScrollView>
+                {data && data.result.map((item, index) => (
+                    <View key={index} style={styles.mainStyle}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignContent: 'center', backgroundColor: '#CD6155', flex: 1 }}>
+                            <Image
+                                style={{ width: '60%', height: '80%' }}
+                                source={{ uri: item.image }}
+                            />
+                        </View>
+                        <View style={{ flex: 1, backgroundColor: '#CCCCFF', alignSelf: 'center', fontSize: 20, fontWeight: '800', alignItems: 'center', marginBottom: 50 }}>
+                            <Text style={{ fontWeight: '900', fontSize: 25 }}>{item.name}</Text>
+                            <Text style={{ fontWeight: '900', fontSize: 22 }}>Price: {item.variety.selling_price}</Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'center', alignContent: 'center' }}>
+                                <Text style={{ fontSize: 15 }}>Offer</Text>
+                                <Text style={{ fontSize: 15 }}>30%</Text>
+                            </View>
+                        </View>
+                    </View>
+                ))}
+            </ScrollView>
         </View>
     );
 };
@@ -33,19 +49,20 @@ const Contact = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#FFFF',
+        backgroundColor: '#ffff',
+        justifyContent:'center',
+        // margin:10,
     },
     mainStyle: {
-        width: '95%',
+        width: '100%',
         justifyContent: 'center',
         height: '25%',
-        backgroundColor: '#40E0D0',
+        backgroundColor: 'red',
         borderRadius: 25,
         flexDirection: 'row',
-        flexl: 1,
-
+        flex: 1,
+        margin:15
     }
 });
 
