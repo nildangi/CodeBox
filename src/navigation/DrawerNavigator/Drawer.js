@@ -32,16 +32,17 @@ import Home from './Home';
 import About from './About';
 import Contact from "./Contact";
 
-const Stack = createStackNavigator();
+
+const Drawer = createDrawerNavigator();
 
 function MyStack() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} options={{headerStyle:{backgroundColor:'lightblue'}}}/>
-        <Stack.Screen name="About" component={About} />
-        <Stack.Screen name="Contact" component={Contact} />
-      </Stack.Navigator>
+      <Drawer.Navigator>
+        <Drawer.Screen name="Home" component={Home} />
+        <Drawer.Screen name="About" component={About} />
+        <Drawer.Screen name="Contact" component={Contact} />
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 
